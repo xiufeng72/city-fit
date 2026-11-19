@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#4e9b8a">
+<title>测一测 · 你适合的城市</title>
+<link rel="stylesheet" href="assets/style.css?v=6">
+</head>
+<body>
+<div class="app">
+  <section class="hero">
+    <div class="kicker">CITY MATCH</div>
+    <h1>测一测<br><em>你适合哪座城市</em></h1>
+    <div class="sub">从一天的生活细节开始</div>
+
+    <div class="illus">
+      <svg viewBox="0 0 340 132" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="268" cy="30" r="11" fill="#CFEDE4"/>
+        <circle cx="284" cy="30" r="11" fill="#E9F6F2"/>
+        <g stroke="#BFDCD4" stroke-width="1.5" stroke-linecap="round">
+          <path d="M40 34h14M47 27v14" opacity=".55"/>
+          <path d="M96 22h10M101 17v10" opacity=".4"/>
+          <path d="M196 40h9" opacity=".5"/>
+        </g>
+        <path d="M14 122h312" stroke="#DCEBE6" stroke-width="2" stroke-linecap="round"/>
+        <g fill="#BFE3D9">
+          <rect x="28" y="76" width="34" height="46" rx="3"/>
+          <rect x="70" y="92" width="26" height="30" rx="3"/>
+        </g>
+        <g fill="#4E9B8A">
+          <rect x="106" y="60" width="38" height="62" rx="3"/>
+          <rect x="196" y="70" width="34" height="52" rx="3"/>
+        </g>
+        <g fill="#123B33">
+          <path d="M152 122V52c0-2 1.4-3.6 3.2-3.6h12.6c1.8 0 3.2 1.6 3.2 3.6v70h-19z"/>
+          <path d="M163 48V30m0 0c-6 0-9 3-9 3m9-3c6 0 9 3 9 3" stroke="#123B33" stroke-width="2" stroke-linecap="round"/>
+        </g>
+        <g fill="#8CC8B8">
+          <path d="M238 122V88l17-13 17 13v34h-34z"/>
+          <path d="M255 75V64" stroke="#8CC8B8" stroke-width="2"/>
+        </g>
+        <g fill="#fff" opacity=".85">
+          <rect x="114" y="70" width="5" height="6" rx="1"/><rect x="126" y="70" width="5" height="6" rx="1"/>
+          <rect x="114" y="84" width="5" height="6" rx="1"/><rect x="126" y="84" width="5" height="6" rx="1"/>
+          <rect x="204" y="80" width="5" height="6" rx="1"/><rect x="216" y="80" width="5" height="6" rx="1"/>
+          <rect x="204" y="94" width="5" height="6" rx="1"/>
+        </g>
+        <g fill="#F6D9A8">
+          <rect x="38" y="86" width="5" height="6" rx="1"/><rect x="49" y="86" width="5" height="6" rx="1"/>
+          <rect x="38" y="99" width="5" height="6" rx="1"/><rect x="49" y="99" width="5" height="6" rx="1"/>
+          <rect x="246" y="96" width="5" height="6" rx="1"/><rect x="258" y="96" width="5" height="6" rx="1"/>
+          <rect x="246" y="108" width="5" height="6" rx="1"/>
+        </g>
+        <path d="M8 122c26-6 52-6 78 0" stroke="#DCEBE6" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </section>
+
+  <section class="start-box">
+    <div class="label">请输入你的测试卡密</div>
+    <input id="code" class="input" type="text" inputmode="text" autocomplete="off"
+           spellcheck="false" maxlength="20" placeholder="CITY-XXXX-XXXX">
+    <div class="err" id="err"></div>
+    <button class="btn" id="start">开始测试</button>
+    <div class="hint">每个卡密仅可使用一次 · 50 道题 · 约 8 分钟</div>
+    <div class="resume hidden" id="resume"></div>
+  </section>
+
+  <section class="dims">
+    <div class="dim"><i></i>生活节奏</div>
+    <div class="dim"><i></i>美食多元</div>
+    <div class="dim"><i></i>文化历史</div>
+    <div class="dim"><i></i>科技创新</div>
+    <div class="dim"><i></i>自然环境</div>
+    <div class="dim"><i></i>夜生活</div>
+    <div class="dim"><i></i>购物消费</div>
+    <div class="dim"><i></i>气候偏好</div>
+    <div class="dim"><i></i>居住成本</div>
+    <div class="dim"><i></i>城市绿化</div>
+  </section>
+
+  <div class="footer-note">
+    结果是一个具体城市，以及匹配度、十维偏好画像和其他适合你的城市。<br>
+    匹配度基于十维剖面的接近程度，是刻度不是概率，不构成迁移或购房建议。<br><br>
+    <a href="admin.html">管理入口</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js?v=1"></script>
+<script src="assets/cloud.js?v=1"></script>
+<script src="assets/app.js?v=7"></script>
+</body>
+</html>

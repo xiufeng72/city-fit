@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>正在测试 · 你适合的城市</title>
+<link rel="stylesheet" href="assets/style.css?v=6">
+</head>
+<body>
+<div class="app">
+  <div class="test-top">
+    <div class="row">
+      <span class="clock" id="clock">07:40</span>
+      <span class="count" id="count">第 1 / 50 题</span>
+    </div>
+    <div class="bar"><i id="bar"></i></div>
+  </div>
+
+  <div class="night-tip" id="nightTip">后半程：关于气候、开销和夜里想不想出门。</div>
+
+  <main class="q-area" id="area"></main>
+
+  <div class="q-nav">
+    <button class="btn ghost back" id="back">上一题</button>
+    <div style="display:flex;align-items:center;justify-content:center;flex:1;font-size:12.5px;color:#9aa9a4">
+      选择后自动进入下一题
+    </div>
+  </div>
+</div>
+
+<div class="submitting" id="submitting">
+  <div class="spinner"></div>
+  <div style="font-size:14px;letter-spacing:1px">正在对照 41 座城市的十个生活维度</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js?v=1"></script>
+<script src="assets/cloud.js?v=1"></script>
+<script src="assets/test.js?v=7"></script>
+</body>
+</html>

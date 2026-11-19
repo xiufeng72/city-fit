@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>正在打开 · 你适合哪座城市</title>
+<style>
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:#f2f9f7;color:#123b33;font:14px -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+  .box{text-align:center;padding:24px}
+  a{color:#4e9b8a}
+</style>
+</head>
+<body>
+<div class="box">
+  <p>正在打开…</p>
+  <p id="fallback" class="hidden" style="display:none">如果页面没有自动跳转，<a id="link" href="./">点这里</a>。</p>
+</div>
+<script>
+(function () {
+  // GitHub Pages 对 /repo/r/<id> 会落到 404.html，这里把深链接还原成结果页。
+  var path = location.pathname;
+  var m = path.match(/^(.*\/)r\/([^\/]+)\/?$/);
+  if (m) {
+    location.replace(m[1] + 'result.html?r=' + encodeURIComponent(m[2]) + (location.hash || ''));
+    return;
+  }
+  var base = path.replace(/[^\/]*$/, '');
+  document.getElementById('link').href = base || './';
+  document.getElementById('fallback').style.display = 'block';
+  setTimeout(function () { location.replace(base || './'); }, 800);
+})();
+</script>
+</body>
+</html>

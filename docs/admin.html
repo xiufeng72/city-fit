@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#123b33">
+<meta name="robots" content="noindex,nofollow">
+<title>卡密管理 · 你适合的城市</title>
+<link rel="stylesheet" href="assets/style.css?v=6">
+<style>
+  .admin-login { max-width: 420px; margin: 0 auto; padding: 8px 0 40px; }
+  .admin-note { font-size: 12.5px; line-height: 1.8; color: #8a9b95; margin-top: 14px; }
+  .admin-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .admin-bar .who { font-size: 12.5px; color: #6b7b76; word-break: break-all; }
+  .admin-actions { display: flex; gap: 8px; }
+  .admin-actions .btn { height: 34px; font-size: 12.5px; padding: 0 14px; width: auto; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+  .badge.unused { background: #e6f4ef; color: #2f7d68; }
+  .badge.in_use { background: #fdf0dc; color: #a8681b; }
+  .badge.used { background: #f1f2f1; color: #8a9b95; }
+  #note { width: 100%; height: 44px; border: 1.5px solid var(--line); background: var(--bg); border-radius: 12px; padding: 0 12px; font-size: 13px; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="app admin">
+  <h1>卡密管理</h1>
+  <div class="sub">Supabase Auth 登录后才会加载数据；未登录时页面里没有任何卡密内容。</div>
+
+  <div id="loginBox" class="admin-login hidden">
+    <div class="label" style="font-size:13px;color:#6b7b76;margin-bottom:8px">管理员邮箱</div>
+    <input id="email" class="input" type="email" autocomplete="username" placeholder="you@example.com" style="letter-spacing:0;font-family:inherit;text-transform:none">
+    <div class="label" style="font-size:13px;color:#6b7b76;margin:14px 0 8px">密码</div>
+    <input id="pwd" class="input" type="password" autocomplete="current-password" placeholder="Supabase 账号密码" style="letter-spacing:1px;font-family:inherit;text-transform:none">
+    <div class="err" id="loginErr"></div>
+    <button class="btn mt8" id="loginBtn">登录</button>
+    <p class="admin-note">账号在 Supabase Dashboard → Authentication → Users 创建，并加入 admins 表。</p>
+  </div>
+
+  <div id="panel"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js?v=1"></script>
+<script src="assets/cloud.js?v=1"></script>
+<script src="assets/admin.js?v=7"></script>
+</body>
+</html>

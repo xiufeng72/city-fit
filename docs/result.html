@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#4e9b8a">
+<title>你的主结果 · 你适合哪座城市</title>
+<link rel="stylesheet" href="assets/style.css?v=6">
+</head>
+<body>
+<div class="app">
+  <div id="loading" style="padding:80px 24px;text-align:center;color:#6b7b76;font-size:14px">
+    正在打开你的结果…
+  </div>
+
+  <div id="errorBox" class="hidden" style="padding:80px 28px;text-align:center">
+    <h2 style="font-size:20px;color:#123b33;margin-bottom:12px">这个结果找不到了</h2>
+    <p class="small muted" style="margin-bottom:24px">链接可能不完整，或者结果已被清理。</p>
+    <a class="btn" href="index.html" style="text-decoration:none">回到首页</a>
+  </div>
+
+  <div id="content" class="hidden">
+    <section class="result-hero">
+      <div class="top">你的主结果 · 具体城市</div>
+      <div class="city-name" id="cityName">—</div>
+      <div class="pct-line">
+        <span class="pct" id="pct">--</span><span class="unit">%</span>
+        <span class="pct-lab">匹配度</span>
+      </div>
+      <p class="conclusion" id="conclusion"></p>
+      <p class="situation" id="situation"></p>
+    </section>
+
+    <div class="sticky-actions">
+      <button class="btn" id="save">保存长图</button>
+      <button class="btn ghost" id="copy">复制链接</button>
+    </div>
+
+    <div class="sections">
+      <div class="section">
+        <h3>匹配理由</h3>
+        <p class="match-note" id="matchNote"></p>
+        <div id="reasons"></div>
+      </div>
+
+      <div class="section">
+        <h3>你的城市偏好画像</h3>
+        <div class="radar-wrap"><canvas id="radar" width="640" height="640"></canvas></div>
+        <p class="small muted center" style="margin:2px 0 12px">越靠外，代表你这一维的偏好越强</p>
+        <p class="portrait" id="portrait"></p>
+        <div class="chips wrap-chips" id="chips"></div>
+      </div>
+
+      <div class="section">
+        <h3>十维对照</h3>
+        <p class="small muted" style="margin:-4px 0 14px">每一维都按「你的倾向 → 城市实况 → 为什么合 / 不合」给出，维度之间不互相抵消。</p>
+        <div class="dim-list" id="dims"></div>
+      </div>
+
+      <div class="section">
+        <h3>其他适合你的城市</h3>
+        <div class="alt-city-list" id="secondary"></div>
+      </div>
+
+      <div class="section">
+        <h3>这里要付的代价</h3>
+        <ul id="costs"></ul>
+      </div>
+
+      <div class="section reverse-card">
+        <h3>不太合拍的城市</h3>
+        <div class="reverse-head">
+          <span class="reverse-city" id="reverseCity">—</span>
+          <span class="reverse-pct" id="reversePct">--%</span>
+        </div>
+        <p id="reverseWhy"></p>
+        <div class="alt-block">
+          <div class="alt-title">如果原本在考虑它，可以先看</div>
+          <div class="alt-list" id="alternatives"></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>这套结论背后的逻辑</h3>
+        <div class="theory-list" id="theory"></div>
+      </div>
+
+      <details class="boundary">
+        <summary>这套测试的推断边界</summary>
+        <ul id="boundary"></ul>
+      </details>
+
+      <div class="disclaimer" id="disclaimer"></div>
+
+      <div class="retake"><button id="retake">再测一次</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal" id="modal">
+  <div class="box">
+    <h4>卡密已经用掉了</h4>
+    <p>这份测试的卡密在开始时就已消耗，再测一次需要一个新的卡密。</p>
+    <div class="btns">
+      <button class="btn" id="modalOk">去输入新卡密</button>
+      <button class="btn ghost" id="modalCancel">先看看结果</button>
+    </div>
+  </div>
+</div>
+
+<div class="img-viewer" id="viewer">
+  <button class="close" id="viewerClose">×</button>
+  <div class="tip" id="viewerTip"></div>
+  <img id="viewerImg" alt="结果长图">
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js?v=1"></script>
+<script src="assets/cloud.js?v=1"></script>
+<script src="assets/radar.js?v=6"></script>
+<script src="assets/share-card.js?v=6"></script>
+<script src="assets/result.js?v=7"></script>
+</body>
+</html>
