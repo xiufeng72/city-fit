@@ -379,34 +379,67 @@
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   }
   function isWeChat() { return /MicroMessenger/i.test(navigator.userAgent); }
+  function isMobile() {
+    return isWeChat() || isIOS() || /Android|Mobile|HarmonyOS/i.test(navigator.userAgent);
+  }
 
-  function showViewer(url, tip) {
+  function tipText() {
+    if (isWeChat()) {
+      return '长按图片 → 保存图片。如果长按没有反应，点右上角「···」选「在浏览器打开」，再长按保存。';
+    }
+    if (isIOS()) return '长按图片 → 存储到照片。也可点下方「下载图片」。';
+    return '长按图片 → 保存到相册。也可点下方「下载图片」。';
+  }
+
+  function showViewer(url, tip, opts) {
+    opts = opts || {};
     var viewer = document.getElementById('viewer');
     var img = document.getElementById('viewerImg');
     var tipEl = document.getElementById('viewerTip');
+    var actions = document.getElementById('viewerActions');
     tipEl.textContent = tip;
     img.src = url;
+    if (actions) {
+      actions.innerHTML = '';
+      var canShareFile = false;
+      if (opts.file && navigator.canShare) {
+        try { canShareFile = navigator.canShare({ files: [opts.file] }); } catch (e) { canShareFile = false; }
+      }
+      if (canShareFile) {
+        var shareBtn = document.createElement('button');
+        shareBtn.className = 'btn';
+        shareBtn.textContent = '分享图片';
+        shareBtn.addEventListener('click', function () {
+          navigator.share({ files: [opts.file], title: '城市匹配长图' }).catch(function () {});
+        });
+        actions.appendChild(shareBtn);
+      }
+      if (url) {
+        var dl = document.createElement('a');
+        dl.className = 'btn ghost';
+        dl.href = url;
+        dl.download = opts.filename || 'result.png';
+        dl.textContent = '下载图片';
+        actions.appendChild(dl);
+      }
+    }
     viewer.classList.add('show');
     document.body.style.overflow = 'hidden';
   }
 
-  function save(canvas, filename) {
-    function fallback() {
-      var url = canvas.toDataURL('image/png');
-      showViewer(url, '长按图片 → 存储到照片');
+  function downloadCanvas(canvas, filename) {
+    function viaDataUrl() {
+      var a = document.createElement('a');
+      a.href = canvas.toDataURL('image/png');
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
     }
-    if (!canvas.toBlob) return fallback();
+    if (!canvas.toBlob) return viaDataUrl();
     canvas.toBlob(function (blob) {
-      if (!blob) return fallback();
+      if (!blob) return viaDataUrl();
       var url = URL.createObjectURL(blob);
-      if (isWeChat()) {
-        showViewer(url, '微信内无法直接下载：长按图片保存到相册，或点右上角「在浏览器打开」后重试。');
-        return;
-      }
-      if (isIOS()) {
-        showViewer(url, '长按图片 → 存储到照片（会保存到「照片」App）。');
-        return;
-      }
       var a = document.createElement('a');
       a.href = url;
       a.download = filename;
@@ -414,8 +447,26 @@
       a.click();
       a.remove();
       setTimeout(function () { URL.revokeObjectURL(url); }, 6000);
-    }, 'image/png', 0.95);
+    }, 'image/png');
   }
 
-  window.ShareCard = { build: build, save: save, isIOS: isIOS, isWeChat: isWeChat };
+  function save(canvas, filename) {
+    // 桌面端维持直接下载
+    if (!isMobile()) { downloadCanvas(canvas, filename); return; }
+
+    // 移动端与微信：先弹全屏预览，长按保存到相册
+    canvas.toBlob(function (blob) {
+      if (!blob) {
+        showViewer(canvas.toDataURL('image/png'), tipText(), { filename: filename });
+        return;
+      }
+      var file = null;
+      try { file = new File([blob], filename, { type: 'image/png' }); } catch (e) { file = null; }
+      // 微信内置浏览器对 blob: 的长按支持不稳定，改用 data URL
+      var url = isWeChat() ? canvas.toDataURL('image/png') : URL.createObjectURL(blob);
+      showViewer(url, tipText(), { file: file, filename: filename });
+    }, 'image/png');
+  }
+
+  window.ShareCard = { build: build, save: save, isIOS: isIOS, isWeChat: isWeChat, isMobile: isMobile };
 })();
