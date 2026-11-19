@@ -1,0 +1,16 @@
+name: supabase-keepalive
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "apikey: sb_publishable_neHOUsDKc0zq5JN5RZc7JA_vqs87Zae" \
+            "https://wdnnmhmbdnxqbcwrerzi.supabase.co/rest/v1/")
+          echo "HTTP $code"
+          if [ "$code" -ge 500 ]; then exit 1; fi
