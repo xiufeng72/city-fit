@@ -648,6 +648,15 @@ details.boundary ul { margin-top: 12px; }
   color: #fff; font-size: 13.5px; text-align: center; line-height: 1.7;
   padding: 10px 0 14px; flex: 0 0 auto;
 }
+.img-viewer .actions {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  padding: 0 0 16px; flex: 0 0 auto;
+}
+.img-viewer .actions .btn {
+  width: auto; height: 40px; padding: 0 20px; font-size: 14px;
+  display: inline-flex; align-items: center; justify-content: center;
+  text-decoration: none;
+}
 .img-viewer img { width: 100%; border-radius: 10px; display: block; margin: 0 auto; }
 .img-viewer .close {
   position: fixed; right: 16px; top: 12px;
