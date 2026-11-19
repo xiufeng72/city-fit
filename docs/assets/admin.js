@@ -28,8 +28,11 @@
     return d.toLocaleString('zh-CN', { hour12: false });
   }
   function statusText(s) {
-    return s === 'unused' ? '未使用' : (s === 'in_use' ? '测试中' : '已使用');
+    return s === 'unused' ? '未使用' : (s === 'in_use' ? '部分使用' : '已用完');
   }
+  function limitOf(c) { return c.max_uses == null ? 2 : c.max_uses; }
+  function usedOf(c) { return c.used_count == null ? 0 : c.used_count; }
+  function remainOf(c) { return Math.max(limitOf(c) - usedOf(c), 0); }
 
   function buildPanel(user) {
     panel.innerHTML =
@@ -53,13 +56,13 @@
         '<div style="display:flex;gap:8px;align-items:center">' +
           '<select id="filter" style="border:1px solid #e1ede9;border-radius:8px;padding:6px 8px;font-size:12.5px;color:#3c4b46;background:#fff">' +
             '<option value="all">全部</option><option value="unused">未使用</option>' +
-            '<option value="in_use">测试中</option><option value="used">已使用</option>' +
+            '<option value="in_use">部分使用</option><option value="used">已用完</option>' +
           '</select>' +
           '<button class="btn ghost" id="exportBtn" style="width:auto;height:32px;font-size:12.5px;padding:0 12px;border-radius:8px">导出 CSV</button>' +
         '</div>' +
       '</div>' +
       '<div class="small muted" id="tableHint"></div>' +
-      '<table><thead><tr><th>卡密</th><th>状态</th><th>使用时间</th><th>结果</th></tr></thead><tbody id="rows"></tbody></table>';
+      '<table><thead><tr><th>卡密</th><th>状态</th><th>剩余</th><th>使用时间</th><th>结果</th></tr></thead><tbody id="rows"></tbody></table>';
 
     document.getElementById('logout').addEventListener('click', function () {
       CF.client.auth.signOut().then(function () { location.reload(); });
@@ -83,8 +86,8 @@
       document.getElementById('stats').innerHTML =
         '<div class="stat"><b>' + (s.total || 0) + '</b><span>总数</span></div>' +
         '<div class="stat"><b>' + (s.unused || 0) + '</b><span>未使用</span></div>' +
-        '<div class="stat"><b>' + (s.inUse || 0) + '</b><span>测试中</span></div>' +
-        '<div class="stat"><b>' + (s.used || 0) + '</b><span>已使用</span></div>';
+        '<div class="stat"><b>' + (s.inUse || 0) + '</b><span>部分使用</span></div>' +
+        '<div class="stat"><b>' + (s.used || 0) + '</b><span>已用完</span></div>';
     }).catch(function (e) {
       document.getElementById('stats').textContent = CF.message(e);
     });
@@ -99,7 +102,7 @@
   function fetchPage(page) {
     var from = page * 1000;
     return CF.client.from('cards')
-      .select('code,status,note,created_at,used_at,result_id')
+      .select('code,status,note,created_at,used_at,result_id,max_uses,used_count')
       .order('created_at', { ascending: false })
       .range(from, from + 999)
       .then(function (res) {
@@ -122,6 +125,7 @@
         : '—';
       return '<tr><td class="code">' + esc(c.code) + '</td>' +
         '<td><span class="badge ' + esc(c.status) + '">' + statusText(c.status) + '</span></td>' +
+        '<td>' + remainOf(c) + ' / ' + limitOf(c) + '</td>' +
         '<td>' + esc(timeText(c.used_at)) + '</td><td>' + link + '</td></tr>';
     }).join('');
   }
@@ -152,12 +156,13 @@
 
   function exportCsv() {
     if (!cards.length) { toast('还没有数据'); return; }
-    var head = ['code', 'status', 'note', 'created_at', 'used_at', 'result_id'];
+    var head = ['code', 'status', 'remaining', 'max_uses', 'used_count', 'note', 'created_at', 'used_at', 'result_id'];
     var lines = [head.join(',')];
     cards.forEach(function (c) {
-      lines.push(head.map(function (k) {
-        var v = c[k] == null ? '' : String(c[k]);
-        return '"' + v.replace(/"/g, '""') + '"';
+      var vals = [c.code, c.status, remainOf(c), limitOf(c), usedOf(c), c.note, c.created_at, c.used_at, c.result_id];
+      lines.push(vals.map(function (v) {
+        var s = v == null ? '' : String(v);
+        return '"' + s.replace(/"/g, '""') + '"';
       }).join(','));
     });
     var blob = new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
