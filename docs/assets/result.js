@@ -113,7 +113,7 @@
       '匹配度是你的十维剖面与城市供给的接近程度，是刻度不是概率；十个维度独立计分，不用高分抵消错位。' +
       '城市数据为方向性整理，气候、房租与商业会随区域和时间波动，结果不构成迁移或购房建议。';
 
-    if (window.Radar) window.Radar.draw(document.getElementById('radar'), d.portrait.vector);
+    if (window.drawRadar) window.drawRadar(document.getElementById('radar'), d.portrait.vector);
 
     show(content);
   }
